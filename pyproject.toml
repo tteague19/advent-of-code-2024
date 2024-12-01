@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [project.scripts]
-happy_holidays = "cli:cli"
+happy_holidays = "src.cli.cli:main"
 
 [build-system]
 requires = ["hatchling"]
