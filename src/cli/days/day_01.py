@@ -5,6 +5,7 @@ The problem description can be found at: https://adventofcode.com/2024/day/1
 """
 
 from collections import Counter
+from enum import IntEnum
 from pathlib import Path
 
 import polars as pl
@@ -27,6 +28,15 @@ FILE_TYPE_ERROR_MESSAGE = " ".join(
         "Expected: .csv but received {file_type}.",
     ]
 )
+
+
+class ExercisePart(IntEnum):
+    """
+    An enumeration of the parts of the exercise.
+    """
+
+    PART_1 = 1
+    PART_2 = 2
 
 
 def validate_input_data_file_type(input_file_path: Path) -> None:
@@ -137,16 +147,50 @@ def calculate_similarity_score(data_frame: pl.DataFrame) -> int:
     return int(sum(similarity_scores))
 
 
+def calculate_solution(
+    file_path: Path,
+    part: ExercisePart,
+) -> None:
+    """
+    Calculate the solution for this day's exercise.
+
+    :param input_file_path: The path to the input file for this day's exercise.
+    :type input_file_path: Path
+    :param part: The part of the exercise for which to calculate the solution.
+    :type part: ExercisePart
+    """
+    data_frame = load_input(file_path=file_path)
+
+    if part == ExercisePart.PART_1:
+        result = calculate_total_distance(data_frame)
+        click.echo(f"The total distance is: {result}")
+    elif part == ExercisePart.PART_2:
+        result = calculate_similarity_score(data_frame)
+        click.echo(f"The similarity score is: {result}")
+    else:
+        click.echo("The exercise only has two parts! Please choose one.")
+
+
 @click.command()
 @click.argument(
     "input_file_path",
     type=click.Path(exists=True, readable=True, path_type=Path),
 )
-def day_01(input_file_path: Path) -> None:
+@click.argument(
+    "part",
+    type=click.Choice([str(part.value) for part in ExercisePart]),
+)
+def day_01(input_file_path: Path, part: ExercisePart) -> None:
     """
     Compute the solution for Day 1 of the Advent of Code 2024.
 
     :param input_file_path: The path to the input file for this day's exercise.
     :type input_file_path: Path
+    :param part: The part of the exercise for which to calculate the solution.
+    :type part: ExercisePart
     """
-    click.echo("Day 1: Not yet implemented")
+    # Click only allows strings as part of the choices for the "part" argument.
+    # So, we need to convert the string to an integer before passing it to the
+    # calculate_solution function.
+    part_enum = ExercisePart(int(part))
+    calculate_solution(file_path=input_file_path, part=part_enum)

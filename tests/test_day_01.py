@@ -13,6 +13,7 @@ from src.cli.days.day_01 import (
     day_01,
     load_input,
     calculate_similarity_score,
+    ExercisePart,
 )
 
 DATA_DIR = Path(__file__).parents[1] / "data" / "day_01"
@@ -24,12 +25,32 @@ INVALID_DATA_TYPES_FILE_PATH = DATA_DIR / "invalid-data-types.csv"
 load_dotenv()
 
 
-def test_day_01_with_valid_input():
-    """Test for Day 1 with valid input."""
+@pytest.mark.parametrize(
+    "part_num, expected_output",
+    [
+        (ExercisePart.PART_1, int(os.getenv("DAY_01_TOTAL_DISTANCE", "0"))),
+        (ExercisePart.PART_2, int(os.getenv("DAY_01_SIMILARITY_SCORE", "0"))),
+    ],
+)
+def test_day_01_with_valid_input(
+    part_num: ExercisePart,
+    expected_output: int,
+):
+    """
+    Determine if the correct solution is produced for each part.
+
+    :param part_num: The part of the exercise to solve.
+    :type part_num: ExercisePart
+    :param expected_output: The expected output for the exercise.
+    :type expected_output: int
+    """
     runner = CliRunner()
-    result = runner.invoke(day_01, [DATA_FILE_PATH.as_posix()])
+    result = runner.invoke(
+        day_01, [DATA_FILE_PATH.as_posix(), str(part_num.value)]
+    )
+
     assert result.exit_code == 0
-    assert "Day 1: Not yet implemented" in result.output
+    assert str(expected_output) in result.output
 
 
 def test_load_input_with_invalid_column_names():
