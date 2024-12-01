@@ -4,7 +4,9 @@ Implements a CLI that runs the exercise for Day 1 of the Advent of Code 2024.
 The problem description can be found at: https://adventofcode.com/2024/day/1
 """
 
+from collections import Counter
 from pathlib import Path
+
 import polars as pl
 import click
 
@@ -100,8 +102,7 @@ def calculate_total_distance(data_frame: pl.DataFrame) -> int:
     :rtype: int
     """
     return int(
-        data_frame
-        .with_columns(
+        data_frame.with_columns(
             pl.col("left").sort().alias("left_sorted"),
             pl.col("right").sort().alias("right_sorted"),
         )
@@ -115,6 +116,25 @@ def calculate_total_distance(data_frame: pl.DataFrame) -> int:
         .to_series()
         .sum()
     )
+
+
+def calculate_similarity_score(data_frame: pl.DataFrame) -> int:
+    """
+    Calculate the similarity score of the input data.
+
+    :param data_frame: The input data for this day's exercise.
+    :type data_frame: pl.DataFrame
+    :return: The similarity score of the input data as defined by the exercise.
+    :rtype: int
+    """
+    data_dict = data_frame.to_dict(as_series=False)
+    counter = Counter(data_dict["right"])
+
+    similarity_scores = [
+        counter.get(number, 0) * number for number in data_dict["left"]
+    ]
+
+    return int(sum(similarity_scores))
 
 
 @click.command()

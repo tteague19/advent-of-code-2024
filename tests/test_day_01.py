@@ -12,6 +12,7 @@ from src.cli.days.day_01 import (
     calculate_total_distance,
     day_01,
     load_input,
+    calculate_similarity_score,
 )
 
 DATA_DIR = Path(__file__).parents[1] / "data" / "day_01"
@@ -65,3 +66,11 @@ def test_calculate_total_distance():
     result = calculate_total_distance(data_frame=data_frame)
 
     assert result == int(os.getenv("DAY_01_TOTAL_DISTANCE"))
+
+
+def test_calculate_similarity_score():
+    """Test for the calculate_total_distance function."""
+    data_frame = load_input(file_path=DATA_FILE_PATH)
+    result = calculate_similarity_score(data_frame=data_frame)
+
+    assert result == int(os.getenv("DAY_01_SIMILARITY_SCORE"))
