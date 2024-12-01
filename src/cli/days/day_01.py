@@ -89,6 +89,34 @@ def load_input(file_path: Path) -> pl.DataFrame:
     return data_frame
 
 
+def calculate_total_distance(data_frame: pl.DataFrame) -> int:
+    """
+    Calculate the total distance between the points in the input data.
+
+    :param data_frame: The input data for this day's exercise.
+    :type data_frame: pl.DataFrame
+    :return: The total distance between the points in the input data as defined
+        by the exercise.
+    :rtype: int
+    """
+    return int(
+        data_frame
+        .with_columns(
+            pl.col("left").sort().alias("left_sorted"),
+            pl.col("right").sort().alias("right_sorted"),
+        )
+        .with_columns(
+            pl.col("left_sorted")
+            .sub(pl.col("right_sorted"))
+            .abs()
+            .alias("distance"),
+        )
+        .select("distance")
+        .to_series()
+        .sum()
+    )
+
+
 @click.command()
 @click.argument(
     "input_file_path",
