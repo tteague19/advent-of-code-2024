@@ -16,13 +16,20 @@ from src.cli.days.day_01 import (
     ExercisePart,
 )
 
-DATA_DIR = Path(__file__).parents[1] / "data" / "day_01"
-DATA_FILE_PATH = DATA_DIR / "distances.csv"
-INVALID_DATA_COL_NAMES_FILE_PATH = DATA_DIR / "invalid-col-names.csv"
-INVALID_DATA_FILE_TYPE_FILE_PATH = DATA_DIR / "invalid-file-type.txt"
-INVALID_DATA_TYPES_FILE_PATH = DATA_DIR / "invalid-data-types.csv"
 
 load_dotenv()
+
+DATA_DIR = Path(__file__).parents[1] / "data" / "day_01"
+DATA_FILE_PATH = DATA_DIR / os.getenv("DAY_01_DATA_FILE_NAME", "")
+INVALID_DATA_COL_NAMES_FILE_PATH = DATA_DIR / os.getenv(
+    "DAY_01_INVALID_DATA_COL_NAMES_FILE_NAME", ""
+)
+INVALID_DATA_FILE_TYPE_FILE_PATH = DATA_DIR / os.getenv(
+    "DAY_01_INVALID_DATA_FILE_TYPE_FILE_NAME", ""
+)
+INVALID_DATA_TYPES_FILE_PATH = DATA_DIR / os.getenv(
+    "DAY_01_INVALID_DATA_TYPES_FILE_NAME", ""
+)
 
 
 @pytest.mark.parametrize(
