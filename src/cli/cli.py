@@ -2,6 +2,8 @@
 
 import click
 
+from cli.days.day_01 import day_01
+
 
 @click.group()
 def cli():
@@ -15,6 +17,7 @@ def hello():
 
 
 cli.add_command(hello)
+cli.add_command(day_01)
 
 
 def main():
