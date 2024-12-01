@@ -1,13 +1,15 @@
 [project]
 name = "cli"
 version = "0.1.0"
-description = "Add your description here"
+description = "A command line interface that implements Advent of Code 2024 solutions."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "click>=8.1.7",
+]
 
 [project.scripts]
-hello = "cli:hello"
+happy_holidays = "cli:cli"
 
 [build-system]
 requires = ["hatchling"]
